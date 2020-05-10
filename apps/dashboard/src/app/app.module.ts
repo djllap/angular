@@ -10,18 +10,19 @@ import { CustomersModule } from './customers/customers.module';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { UiLoginModule } from '@workshop/ui-login';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     NxModule.forRoot(),
-    AppRoutingModule,
-    BrowserAnimationsModule,
     MaterialModule,
-    HomeModule,
-    ProjectsModule,
-    CustomersModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    UiLoginModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
