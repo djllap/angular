@@ -9,7 +9,7 @@
       </mat-card-header>
       <mat-card-content>
         <mat-list>
-          <mat-list-item *ngFor="let project of projects"
+          <mat-list-item *ngFor="let project of projects$ | async"
             (click)="selectProject(project)">
             <h3 mat-line>
               {{project.title}}
@@ -18,7 +18,9 @@
               {{project.details}}
             </p>
             <button mat-icon-button>
-              <mat-icon>close</mat-icon>
+              <mat-icon (click)="deleteProject(project); $event.stopImmediatePropagation()">
+                  close
+              </mat-icon>
             </button>
           </mat-list-item>
         </mat-list>
@@ -31,14 +33,28 @@
       <mat-card-header>
         <mat-card-title>
           <h1>
-            <span *ngIf="currentProject; else elseBlock">{{currentProject?.title}}</span>
+            <span *ngIf="currentProject.id; else elseBlock">{{currentProject?.title}}</span>
             <ng-template #elseBlock>Select a Project</ng-template>
           </h1>
         </mat-card-title>
       </mat-card-header>
-      <form>
+      <form (submit)="saveProject(selectProject)" >
         <mat-card-content>
-          <pre>{{currentProject | json}}</pre>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Title" [(ngModel)]="currentProject.title" type="text" name="title" >
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <textarea matInput placeholder="Details" [(ngModel)]="currentProject.details" type="text" name="details" ></textarea>
+          </mat-form-field>
+          <section class="full-width">
+            <h4>{{currentProject.percentComplete}}%</h4>
+            <mat-slider class="full-width" min="0" max="100" thumbLabel [(ngModel)]="currentProject.percentComplete" name="percentComplete"></mat-slider>
+          </section>
+          <section>
+            <mat-checkbox [(ngModel)]="currentProject.approved" name="approve">
+              Approved By Customer
+            </mat-checkbox>
+          </section>
         </mat-card-content>
         <mat-card-actions>
           <button type="submit" mat-button color="primary">Save</button>
