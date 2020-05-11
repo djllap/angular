@@ -30,8 +30,28 @@ export class ProjectsComponent implements OnInit {
       .subscribe(res => this.getProjects());
   }
 
-  saveProject(project) {
+  createProject(project) {
+    this.projectsService.create(project)
+      .subscribe(res => {
+        this.getProjects();
+        this.resetProject();
+      })
+  }
 
+  updateProject(project) {
+    this.projectsService.update(project)
+      .subscribe(res => {
+        this.getProjects();
+        this.resetProject();
+      })
+  }
+
+  saveProject(project) {
+    if (project.id) {
+      this.updateProject(project);
+    } else {
+      this.createProject(project);
+    }
   }
 
   resetProject() {

@@ -1,66 +1,18 @@
 <div class="container">
   <!-- PROJECTS LIST -->
   <div class="col-50">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          <h1>Projects</h1>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-list>
-          <mat-list-item *ngFor="let project of projects$ | async"
-            (click)="selectProject(project)">
-            <h3 mat-line>
-              {{project.title}}
-            </h3>
-            <p mat-line>
-              {{project.details}}
-            </p>
-            <button mat-icon-button>
-              <mat-icon (click)="deleteProject(project); $event.stopImmediatePropagation()">
-                  close
-              </mat-icon>
-            </button>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
+    <app-projects-list [projects]="projects$ | async"
+      (selected)="selectProject($event)"
+      (deleted)="deleteProject($event)" >
+    </app-projects-list>
   </div>
   <!-- PROJECT DETAILS -->
   <div class="col-50">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          <h1>
-            <span *ngIf="currentProject.id; else elseBlock">{{currentProject?.title}}</span>
-            <ng-template #elseBlock>Select a Project</ng-template>
-          </h1>
-        </mat-card-title>
-      </mat-card-header>
-      <form (submit)="saveProject(selectProject)" >
-        <mat-card-content>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Title" [(ngModel)]="currentProject.title" type="text" name="title" >
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <textarea matInput placeholder="Details" [(ngModel)]="currentProject.details" type="text" name="details" ></textarea>
-          </mat-form-field>
-          <section class="full-width">
-            <h4>{{currentProject.percentComplete}}%</h4>
-            <mat-slider class="full-width" min="0" max="100" thumbLabel [(ngModel)]="currentProject.percentComplete" name="percentComplete"></mat-slider>
-          </section>
-          <section>
-            <mat-checkbox [(ngModel)]="currentProject.approved" name="approve">
-              Approved By Customer
-            </mat-checkbox>
-          </section>
-        </mat-card-content>
-        <mat-card-actions>
-          <button type="submit" mat-button color="primary">Save</button>
-          <button type="button" mat-button (click)="cancel()">Cancel</button>
-        </mat-card-actions>
-      </form>
-    </mat-card>
+    <app-projects-details 
+      [currentProject]="currentProject"
+      (saved)="saveProject($event)"
+      (cancelled)="cancel($event)"
+    >
+    </app-projects-details>
   </div>
 </div>
